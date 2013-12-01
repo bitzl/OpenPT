@@ -27,19 +27,6 @@ DEBUG = 1
 TESTRUN = 0
 
 
-class CLIError(Exception):
-    '''Generic exception to raise and log different fatal errors.'''
-    def __init__(self, msg):
-        super(CLIError).__init__(type(self))
-        self.msg = "E: %s" % msg
-
-    def __str__(self):
-        return self.msg
-
-    def __unicode__(self):
-        return self.msg
-
-
 def get_or_create_config():
     '''If a config exists, read it. If none exists, create a default one before.'''
     pass
@@ -69,7 +56,7 @@ def main(argv=None):  # IGNORE:C0111
     program_shortdesc = __import__('__main__').__doc__.split("\n")[1]
     program_license = '''%s
 
-  Created by user_name on %s.
+  Created by Marcus Bitzl on %s.
   Copyright 2013 organization_name. All rights reserved.
 
   Licensed under the Apache License 2.0
@@ -105,11 +92,11 @@ USAGE
     except KeyboardInterrupt:
         ### handle keyboard interrupt ###
         return 0
-    except Exception:
+    except Exception as e:
         if DEBUG or TESTRUN:
-            raise(Exception)
+            raise(e)
         indent = len(program_name) * " "
-        sys.stderr.write(program_name + ": " + repr(Exception) + "\n")
+        sys.stderr.write(program_name + ": " + repr(e) + "\n")
         sys.stderr.write(indent + "  for help use --help")
         return 2
 
